@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="pt-br">
+	<meta charset="utf-8">
+	<title>Teste Publish</title>
+</head>
+<body>
+	<h2>Teste publish</h2>
+	<form id="form_pub">
+		<fieldset>
+		<legend>Teste Publish</legend>
+			Tópico:
+			<select name="topicos" id="topicos">
+				<option value="teste">teste</option>
+				<option value="mensagem">mensagem</option>
+				<option value="3">Tópico 03</option>
+				<option value="4">Tópico 04</option>
+			</select> <br>
+			Mensagem: <br>
+			
+			<textarea roWs="4" cols="30" name="msg" id="msg"></textarea><br>
+
+			<input type="button" name="pub" id="pub" value="Publish">
+		</fieldset>
+	</form>
+	
+	<script src="Prontos\classes\mqttws31.js"></script>
+	<script src="Prontos\classes\clientMQTT.js"></script> 
+	<script type="text/javascript">
+		init();
+		function pub(){
+			var select = document.getElementById('topicos');
+			var topico = select.options[select.selectedIndex].value;
+
+			client.subscribe(topico);
+			var mensagem = document.getElementById('msg').value;
+			
+			sub = new Paho.MQTT.Message(mensagem);
+			sub.destinationName = topico;
+			client.send(sub);
+		}
+		function cleanForm(){
+			document.getElementById('msg').value=''; 
+		}
+
+		var btn = document.getElementById("pub");
+		btn.addEventListener("click", pub);
+		//btn.addEventListener("click", cleanForm);
+	</script>
+
+</body>
+</html>
