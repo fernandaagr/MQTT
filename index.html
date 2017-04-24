@@ -5,18 +5,16 @@
 	<title>Teste MQTT</title>
 </head>
 <body>
-
+	<script src="classes/mqttws31.js"></script>  
+	<script type="classes/clientMQTT.js"></script>
+	<script type="text/javascript">
+		init();
+	</script>
 	<h2 class="">Controlando LED com MQTT</h2>
     <div class="">
     	<input type="button" name="on" id = "on" value="Liga">
     	<input type="button" name="off" id="off" value="Desliga"> 
     </div>
-
-    <script src="..\classes\mqttws31.js"></script>  
-	<script src="..\classes\clientMQTT.js"></script>
-	<script type="text/javascript">
-		init();
-	</script>
   	<script type="text/javascript">
 
   		function liga(){
