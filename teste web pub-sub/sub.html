@@ -5,11 +5,7 @@
 	<title>Teste Subscribe</title>
 </head>
 <body>
-	<script src="Prontos\classes\mqttws31.js"></script>
-	<script src="Prontos\classes\clientMQTT.js"></script>
-	<script type="text/javascript">
-		init();
-	</script>
+
 
 	<h2>Teste Subscribe</h2>
 	<form name="from_sub">
@@ -25,14 +21,23 @@
 			
 		</p>
 	</form>	
+	<script src="Prontos\classes\mqttws31.js"></script>
+	<script src="Prontos\classes\clientMQTT.js"></script>
 	<script type="text/javascript">	
+		//inicia a conexão do cliente
+		init();
+
+		//função subscribe
 		function sub(){
+			//pega o valor do elemento selecionado na tag select
 			var select = document.getElementById('topicos');
 			var topico = select.options[select.selectedIndex].value;
 
+			//cliente faz o subscribe no tópico
 			client.subscribe(topico);
 		}
 		var btnSub = document.getElementById("sub");
+		//adiciona o evento click no botão 
 		btnSub.addEventListener("click", sub);
 
 	</script>
