@@ -1,15 +1,16 @@
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
+#include <ESP8266WiFi.h> //bilbioteca para usar funções wifi do esp
+#include <PubSubClient.h> //cliente MQTT
 
 // WIFI
-const char* SSID = ""; // Troque seu SSID
-const char* PASSWORD = ""; // Troque sua senha
+const char* SSID = ""; //nome da rede
+const char* PASSWORD = ""; //senha
 
 // MQTT
-const char* BROKER_MQTT = "192.168.0.29"; // IP DO MEU BROKER
-int BROKER_PORT = 1883;
-WiFiClient espClient;
-PubSubClient MQTT(espClient); // Instancia o Cliente MQTT
+const char* BROKER_MQTT = "192.168.0.29"; //endereço do broker
+int BROKER_PORT = 1883; //porta de comunicação do mqtt
+
+WiFiClient espClient;           //cria objeto cliente
+PubSubClient MQTT(espClient);   //instancia o cliente mqtt passando o espClient
 
 //define o pino do led
 #define ledPin 16
@@ -27,21 +28,23 @@ void setup() {
   initWiFi();
   initMQTT();
 }
+//define o modo dos pinos e inicializa
 void initPins() {
-  pinMode(ledPin, OUTPUT); // Led Ligado ao Pino D5 do ESP826 - ESP12-E
+  pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, 0);
 }
 void initSerial() {
-  Serial.begin(115200);
+  Serial.begin(115200); //inicia monitor serial com boundrate 115200
 }
+ //inicializa e conecta na wifi
 void initWiFi() {
   delay(10);
   Serial.println();
   Serial.print("Conectando-se em: ");
   Serial.println(SSID);
 
-  WiFi.begin(SSID, PASSWORD); // Conecta na Rede Wireless
-  while (WiFi.status() != WL_CONNECTED) {
+  WiFi.begin(SSID, PASSWORD); //conecta-se a rede usando o SSID e PASSWORD
+  while (WiFi.status() != WL_CONNECTED) { //enquando o sataus da conexão for diferente de conectado, fica esperando até conectar
     delay(100);
     Serial.print(".");
   }
@@ -51,59 +54,64 @@ void initWiFi() {
   Serial.println(" | IP ");
   Serial.println(WiFi.localIP());
 }
-
-// Funcão para se conectar ao Broker MQTT
-void initMQTT() {
-  MQTT.setServer(BROKER_MQTT, BROKER_PORT);
-  MQTT.setCallback(mqtt_callback);
+//conecta ao broker
+void initMQTT(){
+  MQTT.setServer(BROKER_MQTT, BROKER_PORT);     //seta parametros de conexão MQTT
+  MQTT.setCallback(mqtt_callback);              //atribui função callback
 }
-//Função que recebe as mensagens publicadas
+//função callback, chamada sempre que qualquer informação de um dos tópicos chega
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
 
   String message;
+  //obtem a string do payload recebido
   for (int i = 0; i < length; i++) {
     char c = (char)payload[i];
     message += c;
   }
+  //printa informações
   Serial.print("Tópico ");
   Serial.print(topic);
   Serial.print(" | ");
   Serial.println(message);
+  //realiza ação de acordo com a string recebida
   if (message == "1") {
     digitalWrite(ledPin, 1);
   } else {
     digitalWrite(ledPin, 0);
   }
+  //"zera" string e espera transmissão de dados de saída para completar (?)
   message = "";
   Serial.println();
   Serial.flush();
 }
-
+//reconecta ao broker caso a conexão caia ou não esteja conectado
 void reconnectMQTT() {
   while (!MQTT.connected()) {
     Serial.print("Tentando se conectar ao Broker MQTT: ");
     Serial.println(BROKER_MQTT);
+    //se conseguir conexão o subscribe do(s) topico(s) é feito
     if (MQTT.connect("ESP8266-ESP12-E")) {
       Serial.println("Conectado");
-      MQTT.subscribe("led/1"); // Assina o tópico led/1, obs: esse mesmo tópico será usado para a comunicação com a aplicação web
-
-    } else {
+      MQTT.subscribe("led/1");
+    } else { //caso não consiga conectar espera 2 segundos para tentar de novo
       Serial.println("Falha ao Reconectar");
       Serial.println("Tentando se reconectar em 2 segundos");
       delay(2000);
     }
   }
 }
+//reconecta wifi
 void recconectWiFi() {
+  //enquando o status for diferente, fica tentando conecctar
   while (WiFi.status() != WL_CONNECTED) {
     delay(100);
     Serial.print(".");
   }
 }
 void loop() {
-  if (!MQTT.connected()) {
-    reconnectMQTT(); // Caso o ESP se desconecte do Broker, ele tenta reconectar ao Broker
+  if (!MQTT.connected()) {//se a conexão cair
+    reconnectMQTT();       //tenta conectar novamente
   }
-  recconectWiFi(); // Caso o ESP perca conexão com a rede WiFi, ele tenta se reconetar na rede.
-  MQTT.loop();
+  recconectWiFi(); // se a conexão do esp cair, tenta conectar de novo
+  MQTT.loop(); //keep-alive de comunicação com o broker MQTT
 }
