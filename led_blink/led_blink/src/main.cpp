@@ -2,8 +2,8 @@
 #include <PubSubClient.h>
 
 // WIFI
-const char* SSID = "CENPEX-Rede ADM"; // Troque seu SSID
-const char* PASSWORD = "famec2017"; // Troque sua senha
+const char* SSID = ""; // Troque seu SSID
+const char* PASSWORD = ""; // Troque sua senha
 
 // MQTT
 const char* BROKER_MQTT = "192.168.0.29"; // IP DO MEU BROKER
