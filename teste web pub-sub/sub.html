@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="pt-br">
+	<meta charset="utf-8">
+	<title>Teste Subscribe</title>
+</head>
+<body>
+	<script src="Prontos\classes\mqttws31.js"></script>
+	<script src="Prontos\classes\clientMQTT.js"></script>
+	<script type="text/javascript">
+		init();
+	</script>
+
+	<h2>Teste Subscribe</h2>
+	<form name="from_sub">
+		Tópico:
+		<select name="topicos" id="topicos">
+			<option value="teste">teste</option>
+			<option value="mensagem">mensagem</option>
+			<option value="3">Tópico 03</option>
+			<option value="4">Tópico 04</option>
+		</select>
+		<input type="button" name="sub" id="sub" value="Subscribe">
+		<p>
+			
+		</p>
+	</form>	
+	<script type="text/javascript">	
+		function sub(){
+			var select = document.getElementById('topicos');
+			var topico = select.options[select.selectedIndex].value;
+
+			client.subscribe(topico);
+		}
+		var btnSub = document.getElementById("sub");
+		btnSub.addEventListener("click", sub);
+
+	</script>
+
+</body>
+</html>
