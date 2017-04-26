@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Teste Servo</title>
+</head>
+<body>
+<script src="..\classes\mqttws31.js"></script>
+<script src="..\classes\clientMQTT.js"></script>
+<script type="text/javascript">
+	init();
+</script>
+<form>
+	<fieldset>
+		<legend>Servo: </legend>
+		<input type="range" name="servo" min="0" max="180" value="0" oninput="pubPosicao(this.value)" onchange="pubPosicao(this.value)" /> <br>
+		<span>Posição em graus:</span>
+		<input type="text" name="pos" id="pos" value="" size="1" readonly="true" placeholder="0">
+	</fieldset>
+	<fieldset>
+		<legend>Motor DC:</legend>
+		<span>Diminuir</span>
+		<input type="range" name="dc" min="0" max="100" value="50" oninput="motorDC(this.value)" onchange="motorDC(this.value)" />
+		<span>Aumentar</span>
+	</fieldset>
+	<fieldset>
+		<legend>LED RGB:</legend>
+		<span>R:</span>
+		<input type="text" name="r" id="r" value="" size="1" readonly="true" placeholder="0">
+		<input type="range" name="led" min="0" max="255" value="0" oninput="red(this.value)" onchange="red(this.value)" /> <br>
+		<span>G:</span>
+		<input type="text" name="g" id="g" value="" size="1" readonly="true" placeholder="0">
+		<input type="range" name="green" min="0" max="255" value="0" oninput="green(this.value)" onchange="green(this.value)" /> <br>
+		<span>B:</span>
+		<input type="text" name="b" id="b" value="" size="1" readonly="true" placeholder="0">
+		<input type="range" name="blue" min="0" max="255" value="0" oninput="blue(this.value)" onchange="blue(this.value)" /> <br>
+	</fieldset>
+</form>
+<script type="text/javascript">
+	function pubPosicao(posicao){
+		document.getElementById('pos').value=posicao; 
+		client.subscribe("servo");
+		mensagem = new Paho.MQTT.Message(posicao);
+		mensagem.destinationName = "servo";
+		client.send(mensagem);
+		console.log("enviou");
+	}
+	function motorDC(value){
+		client.subscribe("dc");
+		mensagem = new Paho.MQTT.Message();
+		mensagem.destinationName = "dc";
+		client.send(mensagem);
+	}
+	function red(value){
+		document.getElementById('r').value=value; 
+		client.subscribe("red");
+		mensagem = new Paho.MQTT.Message(value);
+		mensagem.destinationName = "red";
+		client.send(mensagem);
+		console.log("enviou");
+
+	}
+	function green(value){
+		document.getElementById('g').value=value;
+		client.subscribe("green");
+		mensagem = new Paho.MQTT.Message(value);
+		mensagem.destinationName = "green";
+		client.send(mensagem);
+		console.log("enviou");
+
+	}
+	function blue(value){
+		document.getElementById('b').value=value;
+		client.subscribe("blue");
+		mensagem = new Paho.MQTT.Message(value);
+		mensagem.destinationName = "blue";
+		client.send(mensagem);
+		console.log("enviou");
+
+	}
+
+</script>
+
+</body>
+</html>
