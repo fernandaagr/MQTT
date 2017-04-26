@@ -20,7 +20,7 @@
 	<fieldset>
 		<legend>Motor DC:</legend>
 		<span>Diminuir</span>
-		<input type="range" name="dc" min="0" max="100" value="50" oninput="motorDC(this.value)" onchange="motorDC(this.value)" />
+		<input type="range" name="dc" min="198" max="1023" value="0" oninput="motorDC(this.value)" onchange="motorDC(this.value)" />
 		<span>Aumentar</span>
 	</fieldset>
 	<fieldset>
@@ -47,7 +47,7 @@
 	}
 	function motorDC(value){
 		client.subscribe("dc");
-		mensagem = new Paho.MQTT.Message();
+		mensagem = new Paho.MQTT.Message(value);
 		mensagem.destinationName = "dc";
 		client.send(mensagem);
 	}
