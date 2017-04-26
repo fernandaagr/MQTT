@@ -9,7 +9,7 @@
 	<form name="from_sub">
 		<fieldset>
 		<legend>Subscribe: </legend>
-			Tópico:
+			<span>Tópico:</span>
 			<select name="topicos" id="topicos">
 				<option value="teste">teste</option>
 				<option value="mensagem">mensagem</option>
@@ -17,6 +17,17 @@
 				<option value="4">Tópico 04</option>
 			</select>
 			<input type="button" name="sub" id="sub" value="Subscribe">
+		</fieldset>
+		<fieldset>
+			<legend>Unsubscribe: </legend>
+			<span>Tópico:</span>
+			<select name="topUnSubs" id="topUnSubs">
+				<option value="teste">teste</option>
+				<option value="mensagem">mensagem</option>
+				<option value="3">Tópico 03</option>
+				<option value="4">Tópico 04</option>
+			</select>
+			<input type="button" name="unsub" id="unsub" value="Unsubscribe">
 		</fieldset>
 	</form>	
 	<script src="..\classes\mqttws31.js"></script>
@@ -33,10 +44,20 @@
 
 			//cliente faz o subscribe no tópico
 			client.subscribe(topico);
+			alert("Subscribe: " + topico);
+		}
+		function unSub(){
+			var selectUnSub = document.getElementById('topUnSubs');
+			var topUnSub = selectUnSub.options[selectUnSub.selectedIndex].value;
+			client.unsubscribe(topUnSub);
+			alert("Unsubscribe: " + topUnSub);
 		}
 		var btnSub = document.getElementById("sub");
 		//adiciona o evento click no botão 
 		btnSub.addEventListener("click", sub);
+
+		var btnUnSub = document.getElementById("unsub");
+		btnUnSub.addEventListener("click", unSub);
 
 	</script>
 
