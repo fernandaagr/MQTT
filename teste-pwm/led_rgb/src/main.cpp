@@ -1,8 +1,8 @@
 #include <PubSubClient.h> //cliente MQTT
 
 // WIFI
-const char* SSID = "Castle Black"; //nome da rede
-const char* PASSWORD = "011011100"; //senha
+const char* SSID = ""; //nome da rede
+const char* PASSWORD = ""; //senha
 
 // MQTT
 const char* BROKER_MQTT = "192.168.0.14"; //endereço do broker
