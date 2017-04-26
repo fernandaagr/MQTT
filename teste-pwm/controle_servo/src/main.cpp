@@ -3,8 +3,8 @@
 #include <Servo.h>
 
 // WIFI
-const char* SSID = " "; //nome da rede
-const char* PASSWORD = ""; //senha
+const char* SSID = "Castle Black"; //nome da rede
+const char* PASSWORD = "011011100"; //senha
 
 // MQTT
 const char* BROKER_MQTT = "192.168.0.14"; //endereço do broker
@@ -15,7 +15,7 @@ PubSubClient MQTT(espClient);   //instancia o cliente mqtt passando o espClient
 
 #define topicoSub "servo"
 
-//define o pino do led
+//define os pinos
 #define pinServo D1
 Servo servo;
 int value = 0;
@@ -36,8 +36,8 @@ void setup() {
 }
 //define o modo dos pinos e inicializa
 void initPins() {
-  servo.attach(pinServo);
-  servo.write(0); // Inicia motor posição zero
+  servo.attach(pinServo);//Anexa a variável servo a um pino
+  servo.write(0); // Inicia servo na posição zero
 }
 void initSerial() {
   Serial.begin(115200); //inicia monitor serial com boundrate 115200
@@ -80,16 +80,9 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(" | ");
   Serial.println(message);
   //realiza ação de acordo com a string recebida
-  //vmap = map(message,0,180,0,185);
-  value = message.toInt();
-  servo.write(value);
-  Serial.println(value);
-  //delay(10);
-  /*if (message == "1") {
-    digitalWrite(ledPin, 1);
-  } else {
-    digitalWrite(ledPin, 0);
-  }*/
+  value = message.toInt(); //converte a mensagem recebida em inteiro, para poder mandar pros pinos
+  servo.write(value); //escreve nova posição no servo
+
   //"zera" string e espera transmissão de dados de saída para completar (?)
   message = "";
   Serial.println();
