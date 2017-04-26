@@ -1,9 +1,8 @@
-#include <ESP8266WiFi.h> //bilbioteca para usar funções wifi do esp
 #include <PubSubClient.h> //cliente MQTT
 
 // WIFI
-const char* SSID = " "; //nome da rede
-const char* PASSWORD = ""; //senha
+const char* SSID = "Castle Black"; //nome da rede
+const char* PASSWORD = "011011100"; //senha
 
 // MQTT
 const char* BROKER_MQTT = "192.168.0.14"; //endereço do broker
@@ -37,9 +36,14 @@ void setup() {
 }
 //define o modo dos pinos e inicializa
 void initPins() {
-  /*pinMode(redPin, OUTPUT);
+  pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);*/
+  pinMode(bluePin, OUTPUT);
+
+  //starta os pinos em zero
+  analogWrite(redPin, 0);
+  analogWrite(greenPin, 0);
+  analogWrite(bluePin, 0);
 }
 void initSerial() {
   Serial.begin(115200); //inicia monitor serial com boundrate 115200
@@ -82,9 +86,13 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(" | ");
   Serial.println(message);
   //realiza ação de acordo com a string recebida
-  value = message.toInt();
+
+  //strcmp compara duas strings, nesse caso as do topic
+  //ação topico led
+  value = message.toInt(); //converte a mensagem recebida em inteiro, para poder mandar pros pinos
+  //ações topicos do red, green e blue (led RGB)
   if (strcmp(topic,"red")==0){
-    analogWrite(redPin, value);
+    analogWrite(redPin, value);//escreve novo valor
   }
   if (strcmp(topic,"green")==0){
     analogWrite(greenPin, value);
@@ -92,7 +100,6 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   if (strcmp(topic,"blue")==0){
     analogWrite(bluePin, value);
   }
-  delay(10);
 
   message = "";
   Serial.println();
