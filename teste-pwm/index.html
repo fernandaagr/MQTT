@@ -5,81 +5,107 @@
 	<title>Teste Servo</title>
 </head>
 <body>
-<script src="..\classes\mqttws31.js"></script>
-<script src="..\classes\clientMQTT.js"></script>
-<script type="text/javascript">
-	init();
-</script>
-<form>
-	<fieldset>
-		<legend>Servo: </legend>
-		<input type="range" name="servo" min="0" max="180" value="0" oninput="pubPosicao(this.value)" onchange="pubPosicao(this.value)" /> <br>
-		<span>Posição em graus:</span>
-		<input type="text" name="pos" id="pos" value="" size="1" readonly="true" placeholder="0">
-	</fieldset>
-	<fieldset>
-		<legend>Motor DC:</legend>
-		<span>Diminuir</span>
-		<input type="range" name="dc" min="198" max="1023" value="0" oninput="motorDC(this.value)" onchange="motorDC(this.value)" />
-		<span>Aumentar</span>
-	</fieldset>
-	<fieldset>
-		<legend>LED RGB:</legend>
-		<span>R:</span>
-		<input type="text" name="r" id="r" value="" size="1" readonly="true" placeholder="0">
-		<input type="range" name="led" min="0" max="255" value="0" oninput="red(this.value)" onchange="red(this.value)" /> <br>
-		<span>G:</span>
-		<input type="text" name="g" id="g" value="" size="1" readonly="true" placeholder="0">
-		<input type="range" name="green" min="0" max="255" value="0" oninput="green(this.value)" onchange="green(this.value)" /> <br>
-		<span>B:</span>
-		<input type="text" name="b" id="b" value="" size="1" readonly="true" placeholder="0">
-		<input type="range" name="blue" min="0" max="255" value="0" oninput="blue(this.value)" onchange="blue(this.value)" /> <br>
-	</fieldset>
-</form>
-<script type="text/javascript">
-	function pubPosicao(posicao){
-		document.getElementById('pos').value=posicao; 
-		client.subscribe("servo");
-		mensagem = new Paho.MQTT.Message(posicao);
-		mensagem.destinationName = "servo";
-		client.send(mensagem);
-		console.log("enviou");
-	}
-	function motorDC(value){
-		client.subscribe("dc");
-		mensagem = new Paho.MQTT.Message(value);
-		mensagem.destinationName = "dc";
-		client.send(mensagem);
-	}
-	function red(value){
-		document.getElementById('r').value=value; 
-		client.subscribe("red");
-		mensagem = new Paho.MQTT.Message(value);
-		mensagem.destinationName = "red";
-		client.send(mensagem);
-		console.log("enviou");
+	<script src="..\classes\mqttws31.js"></script>
+	<script src="..\classes\clientMQTT.js"></script>
+	<script type="text/javascript">
+		//inicia a conexão do cliente
+		init();
+	</script>
+	<form>
+		<fieldset>
+			<legend>Servo: </legend>
+			<input type="range" name="servo" min="0" max="180" value="0" oninput="pubPosicao(this.value)" onchange="pubPosicao(this.value)" /> <br>
+			<span>Posição em graus:</span>
+			<input type="text" name="pos" id="pos" value="" size="1" readonly="true" placeholder="0">
+		</fieldset>
+		<fieldset>
+			<legend>Motor DC:</legend>
+			<span>Diminuir</span>
+			<input type="range" name="dc" min="198" max="1023" value="0" oninput="motorDC(this.value)" onchange="motorDC(this.value)" />
+			<span>Aumentar</span>
+		</fieldset>
+		<fieldset>
+			<legend>Controle de LED</legend>
+			<input type="button" name="on" id = "on" value="Liga">
+	    	<input type="button" name="off" id="off" value="Desliga">
+		</fieldset>
+		<fieldset>
+			<legend>LED RGB:</legend>
+			<span>R:</span>
+			<input type="text" name="r" id="r" value="" size="1" readonly="true" placeholder="0">
+			<input type="range" name="red" min="0" max="255" value="0" oninput="redLed(this.value)" onchange="redLed(this.value)" /> <br>
+			<span>G:</span>
+			<input type="text" name="g" id="g" value="" size="1" readonly="true" placeholder="0">
+			<input type="range" name="green" min="0" max="255" value="0" oninput="greenLed(this.value)" onchange="greenLed(this.value)" /> <br>
+			<span>B:</span>
+			<input type="text" name="b" id="b" value="" size="1" readonly="true" placeholder="0">
+			<input type="range" name="blue" min="0" max="255" value="0" oninput="blueLed(this.value)" onchange="blueLed(this.value)" /> <br>
+		</fieldset>
+	</form>
+	<script type="text/javascript">
+		//FUNÇÕES PUBLISH
 
-	}
-	function green(value){
-		document.getElementById('g').value=value;
-		client.subscribe("green");
-		mensagem = new Paho.MQTT.Message(value);
-		mensagem.destinationName = "green";
-		client.send(mensagem);
-		console.log("enviou");
-
-	}
-	function blue(value){
-		document.getElementById('b').value=value;
-		client.subscribe("blue");
-		mensagem = new Paho.MQTT.Message(value);
-		mensagem.destinationName = "blue";
-		client.send(mensagem);
-		console.log("enviou");
-
-	}
-
-</script>
+		//publish servo
+		function pubPosicao(posicao){
+			//pega o valor recebido pela função e coloca no input text
+			document.getElementById('pos').value = posicao; 
+			//cliente faz o subscribe no tópico - não é obrigatório, fiz só pra acompanhar as mensagens via console
+			client.subscribe("servo");
+			//cria a nova mensagem a ser enviada para o broker
+			mensagem = new Paho.MQTT.Message(posicao);
+			//diz para qual tópico a mensagem vai ser enviada
+			mensagem.destinationName = "servo";
+			//envia mensagem
+			client.send(mensagem);
+		}
+		//publish motor DC
+		function motorDC(value){
+			client.subscribe("dc");
+			mensagem = new Paho.MQTT.Message(value);
+			mensagem.destinationName = "dc";
+			client.send(mensagem);
+		}
+		//publish led RGB
+		function redLed(value){
+			document.getElementById('r').value = value; 
+			client.subscribe("red");
+			mensagem = new Paho.MQTT.Message(value);
+			mensagem.destinationName = "red";
+			client.send(mensagem);
+		}
+		function greenLed(value){
+			document.getElementById('g').value = value;
+			client.subscribe("green");
+			mensagem = new Paho.MQTT.Message(value);
+			mensagem.destinationName = "green";
+			client.send(mensagem);
+		}
+		function blueLed(value){
+			document.getElementById('b').value=value;
+			client.subscribe("blue");
+			mensagem = new Paho.MQTT.Message(value);
+			mensagem.destinationName = "blue";
+			client.send(mensagem);
+		}
+		//publish controle do LED
+		function liga(){
+	  		client.subscribe("led");
+			message = new Paho.MQTT.Message("1"); // Cria uma nova mensagem
+			message.destinationName = "led"; // Define o tópico a ser enviado, neste caso: led/1
+			client.send(message); // Envia a mensagem
+		}
+		function desliga(){
+			client.subscribe("led");
+			message = new Paho.MQTT.Message("0"); // Cria uma nova mensagem
+			message.destinationName = "led"; // Define o tópico a ser enviado, neste caso: led/1
+			client.send(message); // Envia a mensagem
+		}
+		var btliga = document.getElementById("on");
+		//adiciona o evento click no botão 
+		btliga.addEventListener("click", liga);
+		var btdesliga = document.getElementById("off");
+		btdesliga.addEventListener("click", desliga);
+	</script>
 
 </body>
 </html>
