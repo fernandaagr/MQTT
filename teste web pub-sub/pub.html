@@ -17,9 +17,13 @@
 				<option value="4">Tópico 04</option>
 			</select> <br>
 			Mensagem: <br>			
-			<textarea roWs="4" cols="30" name="msg" id="msg"></textarea> <br>
+			<textarea rows="4" cols="30" name="msg" id="msg" value=""></textarea> <br>
 
 			<input type="button" name="pub" id="pub" value="Publish">
+		</fieldset>
+		<fieldset>
+			<legend>Mensagem Enviada: </legend>
+			<textarea rows="4" cols="30" name="msgSent" id="msgSent" value="" readonly="true"></textarea>
 		</fieldset>
 	</form>
 	
@@ -35,7 +39,7 @@
 			var topico = select.options[select.selectedIndex].value;
 
 			//cliente faz o subscribe no tópico - não é obrigatório, fiz só pra acompanhar as mensagens via console
-			client.subscribe(topico);
+			//client.subscribe(topico);
 
 			//pega o valor do input  da mensagem através do id
 			var mensagem = document.getElementById('msg').value;
@@ -48,6 +52,7 @@
 
 			//faz o publish da mensagem
 			client.send(sub);
+			//document.getElementById("msgSent").value = mensagem;
 		}
 		//função para limpar o campo da mensagem quando for publicada
 		function cleanForm(){

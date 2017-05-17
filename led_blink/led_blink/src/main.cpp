@@ -2,8 +2,8 @@
 #include <PubSubClient.h> //cliente MQTT
 
 // WIFI
-const char* SSID = ""; //nome da rede
-const char* PASSWORD = ""; //senha
+const char* SSID = "CENPEX-Rede ADM"; //nome da rede
+const char* PASSWORD = "famec2017"; //senha
 
 // MQTT
 const char* BROKER_MQTT = "192.168.0.29"; //endereço do broker

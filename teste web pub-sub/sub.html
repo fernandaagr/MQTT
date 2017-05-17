@@ -19,6 +19,10 @@
 			<input type="button" name="sub" id="sub" value="Subscribe">
 		</fieldset>
 		<fieldset>
+			<legend>Mensagens Recebidas: </legend>
+			<textarea rows="4" cols="30" name="msgReceived" id="msgReceived" value="" readonly="true"></textarea>
+		</fieldset>
+		<fieldset>
 			<legend>Unsubscribe: </legend>
 			<span>Tópico:</span>
 			<select name="topUnSubs" id="topUnSubs">
@@ -45,6 +49,7 @@
 			//cliente faz o subscribe no tópico
 			client.subscribe(topico);
 			alert("Subscribe: " + topico);
+			
 		}
 		function unSub(){
 			var selectUnSub = document.getElementById('topUnSubs');
@@ -58,6 +63,8 @@
 
 		var btnUnSub = document.getElementById("unsub");
 		btnUnSub.addEventListener("click", unSub);
+
+
 
 	</script>
 
