@@ -3,6 +3,7 @@
 <head lang="pt-br">
 	<meta charset="utf-8">
 	<title>Teste Publish</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<h2>Teste Publish via Web</h2>
@@ -22,13 +23,26 @@
 			<input type="button" name="pub" id="pub" value="Publish">
 		</fieldset>
 		<fieldset>
-			<legend>Mensagem Enviada: </legend>
-			<textarea rows="4" cols="30" name="msgSent" id="msgSent" value="" readonly="true"></textarea>
+			<legend>Ultima mensagem enviada: </legend>
+			<table class="tb-last" id="tb_last">
+              <thead class="thead-last">
+                <tr>
+                  <th>Topic</th>
+                  <th>Payload</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody class="tbody-last">
+
+              </tbody>
+
+            </table>
 		</fieldset>
 	</form>
 	
 	<script src="..\classes\mqttws31.js"></script>
 	<script src="..\classes\clientMQTT.js"></script> 
+	<script src="..\classes\clientMQTT_pub.js"></script>
 	<script type="text/javascript">
 		//inicia a conexão do cliente
 		init();
@@ -39,7 +53,7 @@
 			var topico = select.options[select.selectedIndex].value;
 
 			//cliente faz o subscribe no tópico - não é obrigatório, fiz só pra acompanhar as mensagens via console
-			//client.subscribe(topico);
+			client.subscribe(topico);
 
 			//pega o valor do input  da mensagem através do id
 			var mensagem = document.getElementById('msg').value;
@@ -54,15 +68,12 @@
 			client.send(sub);
 			//document.getElementById("msgSent").value = mensagem;
 		}
-		//função para limpar o campo da mensagem quando for publicada
-		function cleanForm(){
-			document.getElementById('msg').value=''; 
-		}
+		
 
 		var btn = document.getElementById("pub");
 		//adiciona o evento click no botão 
 		btn.addEventListener("click", pub);
-		//btn.addEventListener("click", cleanForm);
+		btn.addEventListener("click", cleanForm);
 	</script>
 
 </body>

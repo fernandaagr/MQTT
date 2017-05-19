@@ -33,6 +33,22 @@
 			</select>
 			<input type="button" name="unsub" id="unsub" value="Unsubscribe">
 		</fieldset>
+		<fieldset>
+			<legend>Histórico: </legend>
+			<table class="tb-historic" id="tb_Historic">
+              <thead class="thead-historic">
+                <tr>
+                  <th>Topic</th>
+                  <th>Payload</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody class="tbody-historic" id="tbody_historic">
+
+              </tbody>
+
+            </table>
+		</fieldset>
 	</form>	
 	<script src="..\classes\mqttws31.js"></script>
 	<script src="..\classes\clientMQTT.js"></script>
@@ -65,6 +81,10 @@
 		btnUnSub.addEventListener("click", unSub);
 
 
+		client.onMessageArrived = function (message) {
+			console.log('Message Recieved: Topic: ', message.destinationName, ' | Payload: ', message.payloadString);
+			
+		};
 
 	</script>
 

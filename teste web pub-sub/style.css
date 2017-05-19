@@ -1,0 +1,8 @@
+.tb-last{
+	width: 60%;
+	text-align: left;
+}
+.thead-last th{
+	border-bottom: 1px solid black;
+	background-color: #f5f5ff;
+}

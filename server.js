@@ -1,9 +1,9 @@
-var mosca = require('mosca') //import mosca
+var mosca = require('mosca'); //import mosca
  
 //server configuration
 var settings = {
 	port: 1883, 			//MQTT port, port where the server is created
-	host: '192.168.3.109', 	//server address
+	host: '192.168.0.29', 	//server address
  	http: { 				//WebSockets server
     	port: 80,
     	bundle: true,
@@ -31,4 +31,3 @@ server.on('clientConnected', function(client){  //when a client is connected; th
 server.on('published', function(packet, client){ // when a new message is published, the packet and the client are passed as parameters.
 	console.log("Tópico: ", packet.topic, " | ", packet.payload, " | ", new Date().toISOString());//Displays the message topic received and the message buffer
 });
-
