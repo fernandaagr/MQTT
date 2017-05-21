@@ -3,7 +3,7 @@ var mosca = require('mosca'); //import mosca
 //server configuration
 var settings = {
 	port: 1883, 			//MQTT port, port where the server is created
-	host: '192.168.0.29', 	//server address
+	host: '192.168.0.19', 	//server address
  	http: { 				//WebSockets server
 		port: 80,
 		bundle: true,

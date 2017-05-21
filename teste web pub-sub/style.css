@@ -1,8 +1,8 @@
-.tb-last{
+.tb{
 	width: 60%;
 	text-align: left;
 }
-.thead-last th{
+.thead th{
 	border-bottom: 1px solid black;
 	background-color: #f5f5ff;
 }

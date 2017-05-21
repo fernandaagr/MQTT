@@ -3,6 +3,7 @@
 <head lang="pt-br">
 	<meta charset="utf-8">
 	<title>Teste Subscribe</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<h2>Teste Subscribe via Web</h2>
@@ -35,15 +36,15 @@
 		</fieldset>
 		<fieldset>
 			<legend>Histórico: </legend>
-			<table class="tb-historic" id="tb_Historic">
-              <thead class="thead-historic">
+			<table class="tb" id="tb_historic">
+              <thead class="thead">
                 <tr>
                   <th>Topic</th>
                   <th>Payload</th>
                   <th>Time</th>
                 </tr>
               </thead>
-              <tbody class="tbody-historic" id="tbody_historic">
+              <tbody class="tbody">
 
               </tbody>
 
@@ -52,6 +53,7 @@
 	</form>	
 	<script src="..\classes\mqttws31.js"></script>
 	<script src="..\classes\clientMQTT.js"></script>
+	<script src="..\classes\clientMQTT_sub.js"></script>
 	<script type="text/javascript">	
 		//inicia a conexão do cliente
 		init();
@@ -79,12 +81,6 @@
 
 		var btnUnSub = document.getElementById("unsub");
 		btnUnSub.addEventListener("click", unSub);
-
-
-		client.onMessageArrived = function (message) {
-			console.log('Message Recieved: Topic: ', message.destinationName, ' | Payload: ', message.payloadString);
-			
-		};
 
 	</script>
 
