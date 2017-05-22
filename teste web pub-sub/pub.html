@@ -10,16 +10,15 @@
 	<form id="form_pub">
 		<fieldset>
 		<legend>Publish: </legend>
-			Tópico:
+			<span>Tópico:</span>
 			<select name="topicos" id="topicos">
 				<option value="teste">teste</option>
 				<option value="mensagem">mensagem</option>
 				<option value="3">Tópico 03</option>
 				<option value="4">Tópico 04</option>
 			</select> <br>
-			Mensagem: <br>			
+			<span>Mensagem: </span><br>			
 			<textarea rows="4" cols="30" name="msg" id="msg" value=""></textarea> <br>
-
 			<input type="button" name="pub" id="pub" value="Publish">
 		</fieldset>
 		<fieldset>
@@ -35,46 +34,32 @@
               <tbody class="tbody">
 
               </tbody>
-
             </table>
 		</fieldset>
-	</form>
-	
+	</form>	
 	<script src="..\classes\mqttws31.js"></script>
 	<script src="..\classes\clientMQTT.js"></script> 
-	<script src="..\classes\clientMQTT_pub.js"></script>
+	<script src="..\classes\pubInfo.js"></script>
 	<script type="text/javascript">
 		//inicia a conexão do cliente
 		init();
 		//função publish
 		function pub(){
 			//pega o valor do elemento selecionado na tag select
-			var select = document.getElementById('topicos');
-			var topico = select.options[select.selectedIndex].value;
+			var select = document.getElementById('topicos'); //pega o id da tag select
+			var topico = select.options[select.selectedIndex].value;//com o id pega o valor selecionado
 
-			//cliente faz o subscribe no tópico - não é obrigatório, fiz só pra acompanhar as mensagens via console
+			//cliente faz o subscribe no tópico - não é obrigatório, fiz só pra acompanhar as mensagens via console e mostrar na tabela
 			client.subscribe(topico);
-
 			//pega o valor do input  da mensagem através do id
 			var mensagem = document.getElementById('msg').value;
-			
-			//cria a nova mensagem a ser enviada para o broker
-			sub = new Paho.MQTT.Message(mensagem);
-
-			//diz para qual tópico a mensagem vai ser enviada
-			sub.destinationName = topico;
-
-			//faz o publish da mensagem
-			client.send(sub);
-			//document.getElementById("msgSent").value = mensagem;
+			//chama a função q faz o publish no broker, passando o tópico e a mensagem como parametro
+			publish(topico, mensagem);
 		}
-		
-
 		var btn = document.getElementById("pub");
 		//adiciona o evento click no botão 
 		btn.addEventListener("click", pub);
 		btn.addEventListener("click", cleanForm);
 	</script>
-
 </body>
 </html>

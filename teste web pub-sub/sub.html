@@ -53,11 +53,10 @@
 	</form>	
 	<script src="..\classes\mqttws31.js"></script>
 	<script src="..\classes\clientMQTT.js"></script>
-	<script src="..\classes\clientMQTT_sub.js"></script>
+	<script src="..\classes\subInfo.js"></script>
 	<script type="text/javascript">	
 		//inicia a conexão do cliente
 		init();
-
 		//função subscribe
 		function sub(){
 			//pega o valor do elemento selecionado na tag select
@@ -65,14 +64,13 @@
 			var topico = select.options[select.selectedIndex].value;
 
 			//cliente faz o subscribe no tópico
-			client.subscribe(topico);
+			subscribe(topico);
 			alert("Subscribe: " + topico);
-			
 		}
 		function unSub(){
 			var selectUnSub = document.getElementById('topUnSubs');
 			var topUnSub = selectUnSub.options[selectUnSub.selectedIndex].value;
-			client.unsubscribe(topUnSub);
+			unsubscribe(topUnSub);
 			alert("Unsubscribe: " + topUnSub);
 		}
 		var btnSub = document.getElementById("sub");
@@ -81,8 +79,6 @@
 
 		var btnUnSub = document.getElementById("unsub");
 		btnUnSub.addEventListener("click", unSub);
-
 	</script>
-
 </body>
 </html>
